@@ -57,6 +57,7 @@ private:
     QVector<uint32_t> readData;
     QVector<double> procesData;
     QVector<double> mins, maxs;
+    QVector<double> myRes;
 
     QSplineSeries *series = new QSplineSeries();
 

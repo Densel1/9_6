@@ -4,17 +4,18 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-//    , MyGraph(new myGraph(this))
 {
     ui->setupUi(this);
     ui->pb_clearResult->setCheckable(true);
     series->setName("data");
     MyGraph = new myGraph(this);
-    connect(this, &MainWindow::myShow, this, [&](){MyGraph->show();});
+    connect(this, &MainWindow::myShow, this, [&](){
+        ViewGraph();
+    });
     chart = new QChart();
+    chart->legend()->setVisible(false);
     chartView = new QChartView(chart);
-    //И создадим объект нашего класса.
-//    graphClass = new GraphicChart(0);
+
 }
 
 MainWindow::~MainWindow()
@@ -250,22 +251,27 @@ void MainWindow::on_pb_start_clicked()
                                                  */
 
                                                 //создадим контейнеры для хранения данных
+
                                                 QVector<double> x;
                                                 QVector<double> y;
-
-                                                for(int i = 0; i < 1000; ++i)
-                                                {
-                                                    y[i] = res[i];
+                                                int steps = 1000;
+                                                double step = 1;
+                                                x.resize(steps);
+                                                for(int i = 1; i<steps; i++){
+                                                    x[i] = x[i-1]+step;
                                                 }
-
-
-                                                  MyGraph->AddDataToGrahp(x,res);
-                                                  MyGraph->UpdateGraph(chart);
-                                                  //И отобразим его.
-                                                  ViewGraph();
+                                                y.resize(steps);
+                                                for(int i = 0; i < steps; i++)
+                                                {
+                                                    y[i] = res.at(i);
+                                                }
+                                                MyGraph->AddDataToGrahp(x,y);
+                                                MyGraph->UpdateGraph(chart);
 
                                                 emit  myShow();
-                                                QThread::usleep(10000);
+
+
+                                        //        QThread::usleep(10000);
                                              };
 
     auto result = QtConcurrent::run(read)

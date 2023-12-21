@@ -7,14 +7,7 @@ myGraph::myGraph(QWidget *parent) :
 {
     ui->setupUi(this);
 
- //   ptrGraph.resize(0);
-
-    //Создадим объекты серий
-
-        ptrGraph = new QLineSeries(this);
-
-
-
+    ptrGraph = new QLineSeries(this);
 }
 
 myGraph::~myGraph()
